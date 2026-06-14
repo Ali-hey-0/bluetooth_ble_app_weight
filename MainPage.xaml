@@ -1,0 +1,292 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="BleSimpleApp.MainPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    Title="BLE Monitor / پایش بلوتوث"
+    BackgroundColor="{AppThemeBinding Light=#F3F6F9, Dark=#0B1117}">
+
+    <Grid
+        Padding="14"
+        RowDefinitions="Auto,1*,1.25*"
+        RowSpacing="10">
+
+        <Border
+            Grid.Row="0"
+            Padding="14"
+            BackgroundColor="{AppThemeBinding Light=#FFFFFF, Dark=#172331}"
+            Stroke="{AppThemeBinding Light=#D9E2EA, Dark=#2B4357}"
+            StrokeShape="RoundRectangle 18">
+            <Grid
+                RowDefinitions="Auto,Auto,Auto,Auto"
+                RowSpacing="10">
+                <Grid ColumnDefinitions="*,Auto" ColumnSpacing="10">
+                    <VerticalStackLayout Spacing="2">
+                        <Label
+                            FontAttributes="Bold"
+                            FontSize="20"
+                            Text="HC-08 Data Monitor / پایش داده HC-08" />
+                        <Label
+                            FontSize="11"
+                            Opacity="0.65"
+                            Text="Scan, connect and review live measurements / اسکن، اتصال و مشاهده اندازه‌گیری‌ها" />
+                    </VerticalStackLayout>
+
+                    <Border
+                        Grid.Column="1"
+                        Padding="9,5"
+                        BackgroundColor="{AppThemeBinding Light=#E9F8EF, Dark=#173326}"
+                        StrokeThickness="0"
+                        StrokeShape="RoundRectangle 12"
+                        VerticalOptions="Start">
+                        <Label
+                            FontAttributes="Bold"
+                            FontSize="11"
+                            Text="BLE / بلوتوث"
+                            TextColor="#37C978" />
+                    </Border>
+                </Grid>
+
+                <Border
+                    Grid.Row="1"
+                    Padding="11,8"
+                    BackgroundColor="{AppThemeBinding Light=#EDF5FF, Dark=#162C42}"
+                    StrokeThickness="0"
+                    StrokeShape="RoundRectangle 12">
+                    <VerticalStackLayout Spacing="2">
+                        <Label
+                            FontAttributes="Bold"
+                            FontSize="11"
+                            Opacity="0.7"
+                            Text="Connection Status / وضعیت اتصال" />
+                        <Label
+                            x:Name="StatusLabel"
+                            FontAttributes="Bold"
+                            FontSize="13"
+                            LineBreakMode="WordWrap"
+                            Text="Status: Ready / وضعیت: آماده" />
+                    </VerticalStackLayout>
+                </Border>
+
+                <Grid
+                    Grid.Row="2"
+                    ColumnDefinitions="*">
+                    <Button
+                        x:Name="Hc08QuickConnectButton"
+                        Clicked="OnConnectKnownHc08Clicked"
+                        BackgroundColor="#198754"
+                        FontAttributes="Bold"
+                        HeightRequest="48"
+                        Text="Connect Directly to HC-08 / اتصال مستقیم به HC-08"
+                        TextColor="White" />
+                </Grid>
+
+                <Grid
+                    Grid.Row="3"
+                    ColumnDefinitions="1.3*,*"
+                    ColumnSpacing="10">
+                    <Button
+                        x:Name="ScanButton"
+                        Grid.Column="0"
+                        Clicked="OnScanClicked"
+                        FontAttributes="Bold"
+                        HeightRequest="48"
+                        Text="Scan Devices / اسکن دستگاه‌ها" />
+
+                    <Button
+                        x:Name="StopScanButton"
+                        Grid.Column="1"
+                        Clicked="OnStopScanClicked"
+                        HeightRequest="48"
+                        IsEnabled="False"
+                        Text="Stop / توقف" />
+                </Grid>
+            </Grid>
+        </Border>
+
+        <Border
+            Grid.Row="1"
+            Padding="12"
+            BackgroundColor="{AppThemeBinding Light=#FFFFFF, Dark=#151E26}"
+            Stroke="{AppThemeBinding Light=#D9E2EA, Dark=#31414D}"
+            StrokeShape="RoundRectangle 18">
+            <Grid
+                RowDefinitions="Auto,*"
+                RowSpacing="8">
+                <Grid ColumnDefinitions="*,Auto">
+                    <VerticalStackLayout Spacing="2">
+                        <Label
+                            FontAttributes="Bold"
+                            FontSize="17"
+                            Text="Nearby Devices / دستگاه‌های اطراف" />
+                        <Label
+                            FontSize="10"
+                            Opacity="0.65"
+                            Text="Choose HC-08, then tap Connect / HC-08 را انتخاب و متصل کنید" />
+                    </VerticalStackLayout>
+                    <Label
+                        Grid.Column="1"
+                        VerticalOptions="Center"
+                        FontSize="18"
+                        Text="●"
+                        TextColor="#37C978" />
+                </Grid>
+
+                <CollectionView
+                    x:Name="DevicesCollectionView"
+                    Grid.Row="1"
+                    ItemsSource="{Binding Devices}"
+                    SelectionMode="None">
+                    <CollectionView.EmptyView>
+                        <VerticalStackLayout
+                            HorizontalOptions="Center"
+                            VerticalOptions="Center"
+                            Spacing="3">
+                            <Label
+                                HorizontalTextAlignment="Center"
+                                Text="No devices yet / هنوز دستگاهی پیدا نشده است" />
+                            <Label
+                                HorizontalTextAlignment="Center"
+                                FontSize="10"
+                                Opacity="0.6"
+                                Text="Tap Scan Devices to begin / برای شروع اسکن را بزنید" />
+                        </VerticalStackLayout>
+                    </CollectionView.EmptyView>
+
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate>
+                            <Border
+                                Margin="0,4"
+                                Padding="12,9"
+                                BackgroundColor="{AppThemeBinding Light=#F7FAFC, Dark=#202B34}"
+                                Stroke="{AppThemeBinding Light=#D5DEE5, Dark=#3B4B56}"
+                                StrokeShape="RoundRectangle 13">
+                                <Grid
+                                    ColumnDefinitions="*,Auto"
+                                    ColumnSpacing="10">
+                                    <VerticalStackLayout Spacing="2">
+                                        <Label
+                                            FontAttributes="Bold"
+                                            FontSize="16"
+                                            LineBreakMode="TailTruncation"
+                                            Text="{Binding DisplayName}" />
+                                        <Label
+                                            FontSize="10"
+                                            LineBreakMode="MiddleTruncation"
+                                            Opacity="0.55"
+                                            Text="{Binding DeviceId}" />
+                                        <Label
+                                            FontSize="12"
+                                            Text="{Binding RssiText}"
+                                            TextColor="#37C978" />
+                                    </VerticalStackLayout>
+
+                                    <Button
+                                        Grid.Column="1"
+                                        VerticalOptions="Center"
+                                        Clicked="OnDeviceConnectClicked"
+                                        CommandParameter="{Binding .}"
+                                        HeightRequest="44"
+                                        IsEnabled="{Binding IsActionEnabled}"
+                                        MinimumWidthRequest="118"
+                                        Text="{Binding ActionText}" />
+                                </Grid>
+                            </Border>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+            </Grid>
+        </Border>
+
+        <Border
+            Grid.Row="2"
+            Padding="12"
+            BackgroundColor="#081018"
+            Stroke="#2D4658"
+            StrokeShape="RoundRectangle 18">
+            <Grid
+                RowDefinitions="Auto,Auto,Auto,*,Auto"
+                RowSpacing="8">
+                <Grid ColumnDefinitions="*,Auto" ColumnSpacing="8">
+                    <VerticalStackLayout Spacing="1">
+                        <Label
+                            FontAttributes="Bold"
+                            FontSize="17"
+                            Text="Live Measurements / اندازه‌گیری زنده"
+                            TextColor="#E7F0F5" />
+                        <Label
+                            x:Name="TerminalCountLabel"
+                            FontSize="10"
+                            Text="Records / رکوردها: 0"
+                            TextColor="#8FB4C7" />
+                    </VerticalStackLayout>
+
+                    <Label
+                        Grid.Column="1"
+                        FontAttributes="Bold"
+                        FontSize="11"
+                        VerticalOptions="Center"
+                        Text="CSV ASCII"
+                        TextColor="#37C978" />
+                </Grid>
+
+                <Grid
+                    Grid.Row="1"
+                    ColumnDefinitions="*,*"
+                    ColumnSpacing="8">
+                    <Button
+                        Grid.Column="0"
+                        Clicked="OnOpenLogsClicked"
+                        FontAttributes="Bold"
+                        FontSize="11"
+                        HeightRequest="42"
+                        Text="Record Details / جزئیات رکورد" />
+
+                    <Button
+                        Grid.Column="1"
+                        Clicked="OnExportLogsClicked"
+                        FontSize="11"
+                        HeightRequest="42"
+                        Text="Export CSV / ذخیره CSV" />
+                </Grid>
+
+                <Label
+                    x:Name="ReceiveStatsLabel"
+                    Grid.Row="2"
+                    FontSize="10"
+                    Text="Packets: 0 • Bytes: 0 • Valid: 0 • Corrupt: 0"
+                    TextColor="#7FA1B2" />
+
+                <ScrollView
+                    x:Name="TerminalScrollView"
+                    Grid.Row="3">
+                    <Label
+                        x:Name="TerminalLabel"
+                        FontFamily="monospace"
+                        FontSize="12"
+                        LineBreakMode="WordWrap"
+                        Text="Waiting for data... / در انتظار داده..."
+                        TextColor="#7CFC9A" />
+                </ScrollView>
+
+                <Grid
+                    Grid.Row="4"
+                    ColumnDefinitions="*,Auto"
+                    ColumnSpacing="10">
+                    <Label
+                        VerticalOptions="Center"
+                        FontSize="10"
+                        Opacity="0.6"
+                        Text="Latest records are shown automatically / آخرین رکوردها خودکار نمایش داده می‌شوند"
+                        TextColor="#A9C2CF" />
+
+                    <Button
+                        Grid.Column="1"
+                        Clicked="OnClearTerminalClicked"
+                        FontSize="11"
+                        Text="Clear / پاک کردن" />
+                </Grid>
+            </Grid>
+        </Border>
+    </Grid>
+</ContentPage>

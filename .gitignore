@@ -1,0 +1,71 @@
+# .NET build output
+bin/
+obj/
+artifacts/
+publish/
+
+# IDE and editor files
+.vs/
+.vscode/
+.idea/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+*.csproj.user
+*.userprefs
+
+# Build, test, and coverage results
+TestResults/
+BenchmarkDotNet.Artifacts/
+coverage/
+coverage.*
+*.coverage
+*.coveragexml
+*.trx
+*.binlog
+*.log
+
+# NuGet
+packages/
+*.nupkg
+*.snupkg
+
+# Android generated packages and local configuration
+*.apk
+*.aab
+local.properties
+key.properties
+*.keystore
+*.jks
+
+# Apple build output
+*.ipa
+*.dSYM/
+*.dSYM.zip
+mtbs/
+
+# Signing certificates and secrets
+*.pfx
+*.p12
+*.mobileprovision
+secrets.json
+appsettings.*.local.json
+
+# Local BLE captures and screenshots
+/capture-status.png
+/live-now.png
+/phone-current.png
+/hc08-raw-*.txt
+
+# Operating system files
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# Temporary files
+*.tmp
+*.temp
+*.bak
+*.swp
+*~

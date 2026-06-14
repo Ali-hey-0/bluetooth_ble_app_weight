@@ -1,0 +1,245 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="BleSimpleApp.LogsPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    Title="Record Details / جزئیات رکورد"
+    BackgroundColor="{AppThemeBinding Light=#F3F6F9, Dark=#0B1117}">
+
+    <Grid
+        Padding="14"
+        RowDefinitions="125,104,0.8*,1.2*,Auto"
+        RowSpacing="10">
+
+        <Border
+            Grid.Row="0"
+            Padding="14,12"
+            BackgroundColor="{AppThemeBinding Light=#FFFFFF, Dark=#172331}"
+            VerticalOptions="Fill"
+            Stroke="{AppThemeBinding Light=#D9E2EA, Dark=#2B4357}"
+            StrokeShape="RoundRectangle 16">
+            <Grid
+                RowDefinitions="Auto,Auto"
+                ColumnDefinitions="*,Auto"
+                RowSpacing="5">
+                <VerticalStackLayout Spacing="2">
+                    <Label
+                        FontAttributes="Bold"
+                        FontSize="18"
+                        Text="Measurement / اندازه‌گیری" />
+                    <Label
+                        x:Name="ConnectionLabel"
+                        FontSize="10"
+                        LineBreakMode="WordWrap"
+                        MaxLines="2"
+                        Text="Status: Checking... / وضعیت: در حال بررسی..."
+                        TextColor="#37C978" />
+                </VerticalStackLayout>
+
+                <Border
+                    Grid.Column="1"
+                    Padding="10,6"
+                    BackgroundColor="{AppThemeBinding Light=#E9F2FF, Dark=#20354A}"
+                    StrokeThickness="0"
+                    StrokeShape="RoundRectangle 12"
+                    VerticalOptions="Center">
+                    <Label
+                        x:Name="EntryCountLabel"
+                        FontAttributes="Bold"
+                        FontSize="12"
+                        Text="Records / رکوردها: 0"
+                        TextColor="{AppThemeBinding Light=#245A86, Dark=#A9D4F2}" />
+                </Border>
+            </Grid>
+        </Border>
+
+        <Border
+            Grid.Row="1"
+            Padding="10"
+            BackgroundColor="{AppThemeBinding Light=#FFFFFF, Dark=#151E26}"
+            Stroke="{AppThemeBinding Light=#D9E2EA, Dark=#31414D}"
+            StrokeShape="RoundRectangle 14">
+            <Grid
+                RowDefinitions="Auto,*"
+                ColumnDefinitions="*,*,*"
+                ColumnSpacing="8"
+                RowSpacing="6">
+                <VerticalStackLayout
+                    Grid.ColumnSpan="3"
+                    HorizontalOptions="Center"
+                    Spacing="0">
+                    <Label
+                        x:Name="RecordPositionLabel"
+                        HorizontalTextAlignment="Center"
+                        FontAttributes="Bold"
+                        FontSize="12"
+                        Text="No record / بدون رکورد" />
+                    <Label
+                        x:Name="RecordTimeLabel"
+                        HorizontalTextAlignment="Center"
+                        FontSize="10"
+                        Opacity="0.65"
+                        Text="--:--:--" />
+                </VerticalStackLayout>
+
+                <Button
+                    x:Name="PreviousButton"
+                    Grid.Row="1"
+                    Clicked="OnPreviousClicked"
+                    FontSize="11"
+                    HeightRequest="42"
+                    Text="Previous / قبلی"
+                    VerticalOptions="Center" />
+
+                <Button
+                    x:Name="LatestButton"
+                    Grid.Row="1"
+                    Grid.Column="1"
+                    Clicked="OnLatestClicked"
+                    FontSize="11"
+                    HeightRequest="42"
+                    Text="Latest / آخرین"
+                    VerticalOptions="Center" />
+
+                <Button
+                    x:Name="NextButton"
+                    Grid.Row="1"
+                    Grid.Column="2"
+                    Clicked="OnNextClicked"
+                    FontSize="11"
+                    HeightRequest="42"
+                    Text="Next / بعدی"
+                    VerticalOptions="Center" />
+            </Grid>
+        </Border>
+
+        <Grid
+            Grid.Row="2"
+            ColumnDefinitions="*,*"
+            ColumnSpacing="10">
+            <Border
+                Grid.Column="0"
+                Padding="14"
+                BackgroundColor="{AppThemeBinding Light=#EAF3FF, Dark=#162C42}"
+                Stroke="{AppThemeBinding Light=#BFD8F4, Dark=#2E5C82}"
+                StrokeShape="RoundRectangle 18">
+                <VerticalStackLayout
+                    HorizontalOptions="Center"
+                    VerticalOptions="Center"
+                    Spacing="6">
+                    <Label
+                        FontAttributes="Bold"
+                        FontSize="14"
+                        Text="ADC / مبدل آنالوگ"
+                        TextColor="{AppThemeBinding Light=#315A7D, Dark=#A9CCE8}" />
+                    <Label
+                        x:Name="AdcValueLabel"
+                        FontAttributes="Bold"
+                        FontSize="34"
+                        HorizontalTextAlignment="Center"
+                        Text="--"
+                        TextColor="{AppThemeBinding Light=#123D63, Dark=#E7F4FF}" />
+                    <Label
+                        Text="Raw value / مقدار خام"
+                        FontSize="11"
+                        Opacity="0.65" />
+                </VerticalStackLayout>
+            </Border>
+
+            <Border
+                Grid.Column="1"
+                Padding="14"
+                BackgroundColor="{AppThemeBinding Light=#EAFBF1, Dark=#173326}"
+                Stroke="{AppThemeBinding Light=#B9E5C9, Dark=#2E6A49}"
+                StrokeShape="RoundRectangle 18">
+                <VerticalStackLayout
+                    HorizontalOptions="Center"
+                    VerticalOptions="Center"
+                    Spacing="6">
+                    <Label
+                        FontAttributes="Bold"
+                        FontSize="14"
+                        Text="Weight / وزن"
+                        TextColor="{AppThemeBinding Light=#2E7350, Dark=#9CE1B5}" />
+                    <Label
+                        x:Name="WeightValueLabel"
+                        FontAttributes="Bold"
+                        FontSize="34"
+                        HorizontalTextAlignment="Center"
+                        Text="--"
+                        TextColor="{AppThemeBinding Light=#145A35, Dark=#E4FFED}" />
+                    <Label
+                        x:Name="RawWeightLabel"
+                        FontSize="11"
+                        HorizontalTextAlignment="Center"
+                        Opacity="0.7"
+                        Text="Raw / خام: --" />
+                </VerticalStackLayout>
+            </Border>
+        </Grid>
+
+        <Border
+            Grid.Row="3"
+            Padding="14"
+            BackgroundColor="#081018"
+            Stroke="#2D4658"
+            StrokeShape="RoundRectangle 18">
+            <Grid RowDefinitions="Auto,*" RowSpacing="8">
+                <Grid ColumnDefinitions="*,Auto">
+                    <Label
+                        FontAttributes="Bold"
+                        FontSize="15"
+                        Text="Complete Record / رکورد کامل"
+                        TextColor="#E7F0F5" />
+                    <Label
+                        x:Name="LiveModeLabel"
+                        Grid.Column="1"
+                        FontAttributes="Bold"
+                        FontSize="11"
+                        Text="LIVE / زنده"
+                        TextColor="#37C978" />
+                </Grid>
+
+                <ScrollView
+                    x:Name="RecordScrollView"
+                    Grid.Row="1">
+                    <Label
+                        x:Name="RecordDetailsLabel"
+                        FontFamily="monospace"
+                        FontSize="13"
+                        LineBreakMode="WordWrap"
+                        Text="Waiting for a complete CSV record... / در انتظار یک رکورد کامل CSV..."
+                        TextColor="#7CFC9A" />
+                </ScrollView>
+            </Grid>
+        </Border>
+
+        <Grid
+            Grid.Row="4"
+            RowDefinitions="Auto,Auto"
+            ColumnDefinitions="*,*"
+            ColumnSpacing="10"
+            RowSpacing="8">
+            <Label
+                x:Name="StatisticsLabel"
+                Grid.ColumnSpan="2"
+                FontSize="11"
+                HorizontalTextAlignment="Center"
+                Text="Packets: 0 • Bytes: 0 • Valid: 0 • Corrupt: 0"
+                TextColor="{AppThemeBinding Light=#557080, Dark=#8FB4C7}" />
+
+            <Button
+                Grid.Row="1"
+                Grid.Column="0"
+                Clicked="OnClearClicked"
+                Text="Clear Records / پاک کردن رکوردها" />
+
+            <Button
+                Grid.Row="1"
+                Grid.Column="1"
+                Clicked="OnExportClicked"
+                FontAttributes="Bold"
+                Text="Export CSV / ذخیره CSV" />
+        </Grid>
+    </Grid>
+</ContentPage>
